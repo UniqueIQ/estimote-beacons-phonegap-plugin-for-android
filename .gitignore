@@ -2,3 +2,4 @@
 .idea
 *.log
 Thumbs.db
+*.iml

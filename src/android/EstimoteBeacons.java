@@ -12,6 +12,7 @@ import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 
+import com.estimote.sdk.Utils;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -231,6 +232,7 @@ public class EstimoteBeacons extends CordovaPlugin {
         jsonObject.put("rssi", beacon.getRssi());
         jsonObject.put("macAddress", beacon.getMacAddress());
         jsonObject.put("measuredPower", beacon.getMeasuredPower());
+        jsonObject.put("distance", Utils.computeAccuracy(beacon));
         return jsonObject;
     }
 
