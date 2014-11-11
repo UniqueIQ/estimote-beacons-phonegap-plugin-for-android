@@ -22,13 +22,13 @@ In order to add this plugin into your project:
 Using Cordova:
 
 ```sh
-$ cordova plugin add https://github.com/mdc-ux-team/estimote-beacons-phonegap-plugin-for-android.git
+$ cordova plugin add https://github.com/UniqueIQ/estimote-beacons-phonegap-plugin-for-android.git
 ```
 
 Using PhoneGap:
 
 ```sh
-$ phonegap local plugin add https://github.com/mdc-ux-team/estimote-beacons-phonegap-plugin-for-android.git
+$ phonegap local plugin add https://github.com/UniqueIQ/estimote-beacons-phonegap-plugin-for-android.git
 ```
 
 ## Usage
@@ -179,4 +179,4 @@ var app = {
 
 ## License
 
-[MIT](https://github.com/mdc-ux-team/estimote-beacons-phonegap-plugin-for-android/blob/master/LICENSE-MIT)
+[MIT](https://github.com/UniqueIQ/estimote-beacons-phonegap-plugin-for-android/blob/master/LICENSE-MIT)
