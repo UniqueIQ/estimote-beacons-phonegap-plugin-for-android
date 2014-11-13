@@ -36,8 +36,10 @@ public class EstimoteBeacons extends CordovaPlugin {
     public static final String IS_BLUETOOTH_ENABLED = "isBluetoothEnabled";
     public static final String IS_BLE_SUPPORTED = "isBleSupported";
 
+    public static final String UPDATE_REGION_ID = "updateRegionID";
+
     // Constants
-    private static final String REGION_ID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
+    private static String REGION_ID = "B9407F30-F5F8-466E-AFF9-25556B57FE6D";
 
     // Variables
     private BeaconManager beaconManager;
@@ -78,7 +80,6 @@ public class EstimoteBeacons extends CordovaPlugin {
      */
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        Log.d(EstimoteBeacons.class.toString(), "action: " + action);
 
         try {
             if(action.equalsIgnoreCase(START_MONITORING_BEACONS_IN_REGION)) {
@@ -118,6 +119,11 @@ public class EstimoteBeacons extends CordovaPlugin {
                 isBluetoothEnabled(callbackContext);
                 return true;
             }
+
+            if(action.equalsIgnoreCase(UPDATE_REGION_ID)) {
+                updateRegionID(callbackContext, args.get(0).toString());
+                return true;
+            }
         } catch(Exception e) {
             System.out.println(e.getMessage());
             callbackContext.error(e.getMessage());
@@ -135,7 +141,7 @@ public class EstimoteBeacons extends CordovaPlugin {
             @Override
             public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
                 if(beacons == null || beacons.isEmpty()) {
-                    Log.d("DEBUG", "No beacons");
+                    Log.d("DEBUG", "No beacons in region " + region.getProximityUUID());
                     EstimoteBeacons.this.beacons = new ArrayList<Beacon>();
                 } else {
                     EstimoteBeacons.this.beacons = beacons;
@@ -146,6 +152,7 @@ public class EstimoteBeacons extends CordovaPlugin {
             @Override
             public void onServiceReady() {
                 try {
+                    Log.d( "DEBUG", "startRanging Region_ID: " + currentRegion.getProximityUUID() );
                     beaconManager.startRanging(currentRegion);
                 } catch(RemoteException e) {
                     Log.e("DEBUG", "Cannot start ranging", e);
@@ -159,6 +166,7 @@ public class EstimoteBeacons extends CordovaPlugin {
      * @throws RemoteException
      */
     private void stopRangingBeaconsInRegion() throws RemoteException {
+        Log.d( "DEBUG", "stopRanging Region_ID: " + currentRegion.getProximityUUID() );
         beaconManager.stopRanging(currentRegion);
     }
 
@@ -253,5 +261,16 @@ public class EstimoteBeacons extends CordovaPlugin {
     private void isBleSupported(final CallbackContext callbackContext) {
         if(packageManager.hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) callbackContext.success();
         else callbackContext.error("BLE is not supported.");
+    }
+
+    /**
+     * Update Region ID - just in case.
+     * @param callbackContext The callback id used when calling back into JavaScript
+     * @param regionID The new Region ID
+     */
+    private void updateRegionID(final CallbackContext callbackContext, String regionID) {
+        REGION_ID = regionID.toUpperCase();
+        currentRegion = new Region("rid", REGION_ID, null, null);
+        callbackContext.success();
     }
 }

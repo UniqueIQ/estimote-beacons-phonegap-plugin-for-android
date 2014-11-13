@@ -201,4 +201,30 @@ EstimoteBeacons.prototype.isBleSupported = function(successCallback, errorCallba
     );
 };
 
+/**
+ * Update Region ID - just in case.
+ * @param {Function} successCallback
+ * @param {String} [regionID]
+ */
+EstimoteBeacons.prototype.updateRegionID = function(successCallback, regionID) {
+    var METHOD_NAME = 'updateRegionID';
+
+    if(!isFunction(successCallback)) {
+        logError('successCallback parameter must be a function', METHOD_NAME);
+        return;
+    }
+    if ( typeof regionID !== "string" ) {
+        logError('regionID parameter must be a string', METHOD_NAME);
+        return;
+    }
+
+    exec(
+        successCallback,
+        ERROR_CALLBACK,
+        PLUGIN_NAME,
+        METHOD_NAME,
+        [regionID]
+    );
+};
+
 module.exports = new EstimoteBeacons();
